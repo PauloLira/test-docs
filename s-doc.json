@@ -1308,6 +1308,8 @@
   },
   "definitions": {
     "user": {
+      "description": "Get all users",
+      "operationId": "authenticate",
       "properties": {
         "id": {
           "type": "integer"
