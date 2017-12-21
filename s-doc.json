@@ -1,0 +1,1830 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "0.0.1",
+    "title": "GNJ APP",
+    "description": "GNJ app documentation"
+  },
+  "tags": [{
+      "name": "network",
+      "description": "Everything about business rules"
+    },
+    {
+      "name": "reports",
+      "description": "Everything about reports"
+    },
+    {
+      "name": "transaction",
+      "description": "Everything about transactions"
+    },
+    {
+      "name": "setting",
+      "description": "Everything about settings"
+    },
+    {
+      "name": "role",
+      "description": "Everything about roles"
+    },
+    {
+      "name": "reports",
+      "description": "Everything about roles"
+    }
+  ],
+  "schemes": [
+    "http"
+  ],
+  "host": "gnjapp-stag.com",
+  "basePath": "/",
+  "paths": {
+    "/authenticate": {
+      "post": {
+        "tags": ["user"],
+        "summary": "authenticate",
+        "description": "Authenticate with email and password",
+        "operationId": "authenticate",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "email",
+            "in": "body",
+            "required": true,
+            "type": "email",
+            "description": "User Email"
+          },
+          {
+            "name": "password",
+            "in": "body",
+            "type": "string",
+            "required": true,
+            "description": "User Password"
+          },
+          {
+            "$ref": "#/parameters/imei"
+          },
+          {
+            "$ref": "#/parameters/deviceId"
+          },
+          {
+            "$ref": "#/parameters/pushNotificationId"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Authenticated User",
+            "schema": {
+              "$ref": "#/responses/Auth200"
+            }
+          },
+          "401": {
+            "description": "Invalid Token",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "facebook/authenticate": {
+      "post": {
+        "tags": ["user"],
+        "summary": "authenticate",
+        "description": "Authenticate with email and password",
+        "operationId": "authenticate",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "parameters": [{
+            "name": "token",
+            "in": "body",
+            "required": true,
+            "type": "string",
+            "description": "Facebook access token"
+          },
+          {
+            "$ref": "#/parameters/imei"
+          },
+          {
+            "$ref": "#/parameters/deviceId"
+          },
+          {
+            "$ref": "#/parameters/pushNotificationId"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Authenticated User",
+            "schema": {
+              "$ref": "#/responses/Auth200"
+            }
+          },
+          "401": {
+            "description": "Invalid Token",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/user": {
+      "post": {
+        "tags": ["user"],
+        "summary": "create",
+        "description": "Create User",
+        "operationId": "create",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "parameters": [{
+          "in": "body",
+          "name": "user",
+          "description": "User model",
+          "schema": {
+            "$ref": "#/definitions/user"
+          }
+        }],
+        "responses": {
+          "200": {
+            "description": "Authenticated User",
+            "schema": {
+              "$ref": "#/responses/Auth200"
+            }
+          },
+          "400": {
+            "description": "Invalid input",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/report/getTopNetworks": {
+      "get": {
+        "tags": ["reports"],
+        "summary": "get",
+        "description": "Get top 5 networks by country",
+        "operationId": "getTopNetworks",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "parameters": [{
+          "in": "query",
+          "name": "networkId",
+          "required": "true",
+          "description": "Network id",
+          "type": "string"
+        }],
+        "responses": {
+          "200": {
+            "description": "Top networks",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "networkName": {
+                    "type": "string"
+                  },
+                  "businessRule": {
+                    "type": "integer"
+                  },
+                  "country": {
+                    "type": "string"
+                  },
+                  "revenue": {
+                    "type": "integer"
+                  },
+                  "rank": {
+                    "type": "integer"
+                  },
+                  "lastRank": {
+                    "type": "integer"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/report/getTopStates": {
+      "get": {
+        "tags": ["reports"],
+        "summary": "get",
+        "description": "Get top 5 states by country",
+        "operationId": "getStateByCountry",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "parameters": [{
+          "in": "query",
+          "name": "networkId",
+          "required": "true",
+          "description": "Network id",
+          "type": "string"
+        }],
+        "responses": {
+          "200": {
+            "description": "Top states",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "state": {
+                    "type": "string"
+                  },
+                  "businessRule": {
+                    "type": "integer"
+                  },
+                  "country": {
+                    "type": "string"
+                  },
+                  "revenue": {
+                    "type": "integer"
+                  },
+                  "rank": {
+                    "type": "integer"
+                  },
+                  "lastRank": {
+                    "type": "integer"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/report/getRedeemablePerDate": {
+      "get": {
+        "tags": ["reports"],
+        "summary": "get",
+        "description": "Get points redeemables per period",
+        "operationId": "getRedeemablePerDate",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "parameters": [{
+            "in": "query",
+            "name": "dateTo",
+            "required": "true",
+            "description": "Limit date",
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "dateFrom",
+            "required": "true",
+            "description": "Initial date",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Top redeemable",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "date": {
+                    "type": "string"
+                  },
+                  "redeem": {
+                    "type": "integer"
+                  },
+                  "revenue": {
+                    "type": "string"
+                  },
+                  "offerwall": {
+                    "type": "integer"
+                  },
+                  "percentage": {
+                    "type": "integer"
+                  },
+                  "total": {
+                    "type": "integer"
+                  },
+                  "description": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "type":{
+                          "type": "string"
+                        },
+                        "redeemTotal":{
+                          "type": "number"
+                        },
+                        "revenueTotal":{
+                          "type": "number"
+                        },
+                        "percentage":{
+                          "type": "number"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/report/getDailyRevenuePerDate": {
+      "get": {
+        "tags": ["reports"],
+        "summary": "getDailyRevenuePerDate",
+        "description": "Get points redeemables per period",
+        "operationId": "get",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "parameters": [{
+            "in": "query",
+            "name": "dateTo",
+            "required": "true",
+            "description": "Limit date",
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "dateFrom",
+            "required": "true",
+            "description": "Initial date",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Total  Revenue",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "date": {
+                    "type": "string"
+                  },
+                  "total": {
+                    "type": "integer"
+                  },
+                  "description": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "type":{
+                          "type": "string"
+                        },
+                        "total":{
+                          "type": "number"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/userFriend": {
+      "post": {
+        "tags": ["user"],
+        "summary": "Add referal friend",
+        "description": "Create referal friend",
+        "operationId": "create",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "parameters": [{
+          "in": "body",
+          "name": "user",
+          "description": "User model",
+          "schema": {
+            "$ref": "#/definitions/userFriend"
+          }
+        }],
+        "responses": {
+          "200": {
+            "description": "Authenticated User",
+            "schema": {
+              "$ref": "#/responses/Auth200"
+            }
+          },
+          "400": {
+            "description": "Invalid input",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/user/{id}": {
+      "put": {
+        "tags": ["user"],
+        "summary": "update",
+        "description": "Update User",
+        "operationId": "update",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "parameters": [{
+            "in": "path",
+            "name": "id",
+            "description": "User id",
+            "type": "integer"
+          },
+          {
+            "in": "body",
+            "name": "user",
+            "description": "User model",
+            "schema": {
+              "$ref": "#/definitions/user"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Authenticated User",
+            "schema": {
+              "$ref": "#/definitions/user"
+            }
+          },
+          "400": {
+            "description": "User not found",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": ["user"],
+        "summary": "delete",
+        "description": "Delete User",
+        "operationId": "delete",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "parameters": [{
+          "in": "path",
+          "name": "id",
+          "description": "User id",
+          "type": "integer"
+        }],
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "400": {
+            "description": "User not found",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/forgotpassword": {
+      "post": {
+        "tags": ["user"],
+        "summary": "forgot password",
+        "description": "Send email to reset password",
+        "operationId": "forgotPassword",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "parameters": [{
+          "in": "body",
+          "name": "email",
+          "description": "User email",
+          "required": true,
+          "type": "email"
+        }],
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "400": {
+            "description": "User not found",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/recoverypassword": {
+      "post": {
+        "tags": ["user"],
+        "summary": "Rest password",
+        "description": "Reset the user password",
+        "operationId": "resetPassword",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "parameters": [{
+            "in": "body",
+            "name": "token",
+            "description": "User reset password token",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "password",
+            "description": "New password",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "400": {
+            "description": "User not found",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/activateaccount": {
+      "post": {
+        "tags": ["user"],
+        "summary": "Activate account",
+        "description": "Activate account",
+        "operationId": "activateAccount",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "parameters": [{
+          "in": "body",
+          "name": "token",
+          "description": "User token",
+          "required": true,
+          "type": "string"
+        }],
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "400": {
+            "description": "Token not found",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/user/getpoints/{userID}/network/{networkID}": {
+      "post": {
+        "tags": ["user"],
+        "summary": "Get Points",
+        "description": "Get user Points",
+        "operationId": "getPoints",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "parameters": [{
+            "in": "path",
+            "name": "userID",
+            "description": "User id",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "path",
+            "name": "networkID",
+            "description": "Network id",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "points": {
+                  "type": "integer"
+                },
+                "totalUsd": {
+                  "type": "number"
+                },
+                "redeemable": {
+                  "type": "number"
+                },
+                "value": {
+                  "type": "number"
+                },
+                "ratio": {
+                  "type": "number"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/user/getStatement/{userID}": {
+      "get": {
+        "tags": ["user", "reports"],
+        "summary": "Get Statmentttt",
+        "description": "Get user statement details",
+        "operationId": "getStatement",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "parameters": [{
+            "in": "path",
+            "name": "userID",
+            "description": "User id",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "period",
+            "description": "Period interval",
+            "required": true,
+            "type": "string"
+          }
+        ],
+
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "initialBalance": {
+                  "type": "integer"
+                },
+                "initialBalanceDate": {
+                  "type": "string"
+                },
+                "finalBalance": {
+                  "type": "number"
+                },
+                "redeemablePoints": {
+                  "type": "number"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/network": {
+      "post": {
+        "tags": ["network"],
+        "summary": "create",
+        "description": "Create Business Rule",
+        "operationId": "create",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "parameters": [{
+          "in": "body",
+          "name": "network",
+          "description": "Network model",
+          "schema": {
+            "$ref": "#/definitions/network"
+          }
+        }],
+        "responses": {
+          "200": {
+            "description": "Network details",
+            "schema": {
+              "$ref": "#/definitions/network"
+            }
+          },
+          "400": {
+            "description": "Invalid input",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": ["network"],
+        "summary": "get",
+        "description": "Get Business Rule",
+        "operationId": "findAll",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Networks list",
+            "schema": {
+              "$ref": "#/definitions/networks"
+            }
+          }
+        }
+      }
+    },
+    "/network/{id}": {
+      "get": {
+        "tags": ["network"],
+        "summary": "find",
+        "description": "Find one Business Rule",
+        "operationId": "find",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "parameters": [{
+          "in": "path",
+          "name": "id",
+          "description": "Network id",
+          "type": "integer"
+        }],
+        "responses": {
+          "200": {
+            "description": "Network",
+            "schema": {
+              "$ref": "#/definitions/network"
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": ["network"],
+        "summary": "update",
+        "description": "Update Network",
+        "operationId": "update",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "parameters": [{
+            "in": "path",
+            "name": "id",
+            "description": "Network id",
+            "type": "integer"
+          },
+          {
+            "in": "body",
+            "name": "network",
+            "description": "Network model",
+            "schema": {
+              "$ref": "#/definitions/network"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Updated network",
+            "schema": {
+              "$ref": "#/definitions/network"
+            }
+          },
+          "400": {
+            "description": "Network not found",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": ["network"],
+        "summary": "delete",
+        "description": "Delete Network",
+        "operationId": "delete",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "parameters": [{
+          "in": "path",
+          "name": "id",
+          "description": "Network id",
+          "type": "integer"
+        }],
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "400": {
+            "description": "Network not found",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/role": {
+      "post": {
+        "tags": ["role"],
+        "summary": "create",
+        "description": "Create role",
+        "operationId": "create",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "parameters": [{
+          "in": "body",
+          "name": "role",
+          "description": "Role model",
+          "schema": {
+            "$ref": "#/definitions/role"
+          }
+        }],
+        "responses": {
+          "200": {
+            "description": "Role details",
+            "schema": {
+              "$ref": "#/definitions/role"
+            }
+          },
+          "400": {
+            "description": "Invalid input",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": ["role"],
+        "summary": "get",
+        "description": "Get roles list",
+        "operationId": "findAll",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Roles list",
+            "schema": {
+              "$ref": "#/definitions/roles"
+            }
+          }
+        }
+      }
+    },
+    "/role/{id}": {
+      "get": {
+        "tags": ["role"],
+        "summary": "find",
+        "description": "Find one role",
+        "operationId": "find",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "parameters": [{
+          "in": "path",
+          "name": "id",
+          "description": "Role id",
+          "type": "integer"
+        }],
+        "responses": {
+          "200": {
+            "description": "Role",
+            "schema": {
+              "$ref": "#/definitions/role"
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": ["role"],
+        "summary": "update",
+        "description": "Update Role",
+        "operationId": "update",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "parameters": [{
+            "in": "path",
+            "name": "id",
+            "description": "Role id",
+            "type": "integer"
+          },
+          {
+            "in": "body",
+            "name": "role",
+            "description": "Role model",
+            "schema": {
+              "$ref": "#/definitions/role"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Updated Role",
+            "schema": {
+              "$ref": "#/definitions/network"
+            }
+          },
+          "400": {
+            "description": "Role not found",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": ["role"],
+        "summary": "delete",
+        "description": "Delete Role",
+        "operationId": "delete",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "parameters": [{
+          "in": "path",
+          "name": "id",
+          "description": "Role id",
+          "type": "integer"
+        }],
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "400": {
+            "description": "Role not found",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/permission": {
+      "post": {
+        "tags": ["permission"],
+        "summary": "create",
+        "description": "Create Permission",
+        "operationId": "create",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "parameters": [{
+          "in": "body",
+          "name": "permission",
+          "description": "Permission model",
+          "schema": {
+            "$ref": "#/definitions/permission"
+          }
+        }],
+        "responses": {
+          "200": {
+            "description": "Permission details",
+            "schema": {
+              "$ref": "#/definitions/permission"
+            }
+          },
+          "400": {
+            "description": "Invalid input",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": ["permission"],
+        "summary": "get",
+        "description": "Get permissions list",
+        "operationId": "findAll",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Permission list",
+            "schema": {
+              "$ref": "#/definitions/permissions"
+            }
+          }
+        }
+      }
+    },
+    "/permission/{id}": {
+      "get": {
+        "tags": ["permission"],
+        "summary": "find",
+        "description": "Find one Permission",
+        "operationId": "find",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "parameters": [{
+          "in": "path",
+          "name": "id",
+          "description": "Permission id",
+          "type": "integer"
+        }],
+        "responses": {
+          "200": {
+            "description": "Permission",
+            "schema": {
+              "$ref": "#/definitions/permission"
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": ["permission"],
+        "summary": "update",
+        "description": "Update Permission",
+        "operationId": "update",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "parameters": [{
+            "in": "path",
+            "name": "id",
+            "description": "Permission id",
+            "type": "integer"
+          },
+          {
+            "in": "body",
+            "name": "role",
+            "description": "Permission model",
+            "schema": {
+              "$ref": "#/definitions/permission"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Updated Permission",
+            "schema": {
+              "$ref": "#/definitions/permission"
+            }
+          },
+          "400": {
+            "description": "Permission not found",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": ["permission"],
+        "summary": "delete",
+        "description": "Permission Details",
+        "operationId": "delete",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "parameters": [{
+          "in": "path",
+          "name": "id",
+          "description": "Permission id",
+          "type": "integer"
+        }],
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "400": {
+            "description": "Permission not found",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/generalsettings/{id}": {
+      "get": {
+        "tags": ["setting"],
+        "summary": "find",
+        "description": "Find one Setting",
+        "operationId": "find",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "parameters": [{
+          "in": "path",
+          "name": "id",
+          "description": "Setting id",
+          "type": "integer"
+        }],
+        "responses": {
+          "200": {
+            "description": "Setting",
+            "schema": {
+              "$ref": "#/definitions/generalsettings"
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": ["setting"],
+        "summary": "update",
+        "description": "Update General Settings",
+        "operationId": "update",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "parameters": [{
+            "in": "path",
+            "name": "id",
+            "description": "General settings id",
+            "type": "integer"
+          },
+          {
+            "in": "body",
+            "name": "role",
+            "description": "GeneralSettings model",
+            "schema": {
+              "$ref": "#/definitions/generalsettings"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Updated General Settings",
+            "schema": {
+              "$ref": "#/definitions/generalsettings"
+            }
+          },
+          "400": {
+            "description": "General Settings not found",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/overallTransaction": {
+      "post": {
+        "tags": ["transaction"],
+        "summary": "create",
+        "description": "create overall Transaction",
+        "operationId": "create",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "parameters": [{
+            "in": "body",
+            "name": "userID",
+            "description": "User id",
+            "type": "integer"
+          },
+          {
+            "in": "body",
+            "name": "deviceID",
+            "description": "Device id",
+            "type": "integer"
+          },
+          {
+            "in": "body",
+            "name": "overallTransactionTypeID",
+            "description": "OverallTransaction Type  id",
+            "type": "integer"
+          },
+          {
+            "in": "body",
+            "name": "networkID",
+            "description": "network id",
+            "type": "integer"
+          },
+          {
+            "in": "body",
+            "name": "ipAddress",
+            "description": "Ip address",
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "longitude",
+            "description": "Current longitude",
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "latitude",
+            "description": "Current latitude",
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "adProvider",
+            "description": "Ad Provider",
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "adProvider",
+            "description": "Device imei",
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "adTypeID",
+            "description": "Ad type",
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "points",
+            "description": "Point to receive",
+            "type": "integer"
+          },
+          {
+            "in": "body",
+            "name": "countryCode",
+            "description": "Current country code",
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Setting",
+            "schema": {
+              "$ref": "#/definitions/overallTransaction"
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": ["setting"],
+        "summary": "update",
+        "description": "Update General Settings",
+        "operationId": "update",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "parameters": [{
+            "in": "path",
+            "name": "id",
+            "description": "General settings id",
+            "type": "integer"
+          },
+          {
+            "in": "body",
+            "name": "role",
+            "description": "GeneralSettings model",
+            "schema": {
+              "$ref": "#/definitions/generalsettings"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Updated General Settings",
+            "schema": {
+              "$ref": "#/definitions/generalsettings"
+            }
+          },
+          "400": {
+            "description": "General Settings not found",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    }
+
+  },
+  "definitions": {
+    "user": {
+      "properties": {
+        "id": {
+          "type": "integer"
+        },
+        "firstName": {
+          "type": "string"
+        },
+        "lastName": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string"
+        },
+        "longitude": {
+          "type": "string"
+        },
+        "latitude": {
+          "type": "string"
+        },
+        "language": {
+          "type": "string"
+        },
+        "dateBirth": {
+          "type": "date-time"
+        },
+        "city": {
+          "type": "string"
+        },
+        "state": {
+          "type": "string"
+        },
+        "country": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        },
+        "disclaimerAccepted": {
+          "type": "boolean"
+        },
+        "hasLockScreen": {
+          "type": "boolean"
+        },
+        "lockScreenOption": {
+          "type": "string"
+        },
+        "phoneNumber": {
+          "type": "string"
+        },
+        "phone": {
+          "type": "string"
+        },
+        "forgotToken": {
+          "type": "string"
+        },
+        "activateToken": {
+          "type": "uuid"
+        },
+        "accountConfirmation": {
+          "type": "boolean"
+        },
+        "role": {
+          "type": "string"
+        },
+        "isFromDevice": {
+          "type": "boolean"
+        },
+        "optedOut": {
+          "type": "boolean"
+        },
+        "lockScreenState": {
+          "type": "boolean"
+        },
+        "lastRedeemDate": {
+          "type": "date-time"
+        },
+        "optOutDateTime": {
+          "type": "date-time"
+        },
+        "pushNotificationId": {
+          "type": "text"
+        },
+        "isActive": {
+          "type": "boolean"
+        },
+        "createdAt": {
+          "type": "date-time"
+        },
+        "updatedAt": {
+          "type": "date-time"
+        }
+      }
+    },
+    "userFriend": {
+      "properties": {
+        "userFrindId": {
+          "type": "integer"
+        },
+        "userId": {
+          "type": "integer"
+        },
+        "friendEmail": {
+          "type": "string"
+        }
+      }
+    },
+    "topStates": {
+      "properties": {
+        "userFrindId": {
+          "type": "integer"
+        },
+        "userId": {
+          "type": "integer"
+        },
+        "friendEmail": {
+          "type": "string"
+        }
+      }
+    },
+    "network": {
+      "properties": {
+        "networkId": {
+          "type": "integer"
+        },
+        "name": {
+          "type": "string",
+          "required": true
+        },
+        "country": {
+          "type": "string",
+          "required": true
+        },
+        "pointsToGetOne": {
+          "type": "string",
+          "required": true
+        },
+        "valuePerVideo": {
+          "type": "string",
+          "required": true
+        },
+        "valuePerOfferwall": {
+          "type": "string",
+          "required": true
+        },
+        "usdFirstPayment": {
+          "type": "string",
+          "required": true
+        },
+        "usdNextPayment": {
+          "type": "string",
+          "required": true
+        },
+        "incNextPayment": {
+          "type": "string",
+          "required": true
+        },
+        "valuePerInterstitial": {
+          "type": "string",
+          "required": true
+        },
+        "daysToGetPaid": {
+          "type": "integer",
+          "required": true
+        },
+        "daysToFirstPmnt": {
+          "type": "integer",
+          "required": true
+        },
+        "payday": {
+          "type": "integer",
+          "required": true
+        },
+        "daysToNextPmnt": {
+          "type": "integer",
+          "required": true
+        },
+        "pointsToReedem": {
+          "type": "integer",
+          "required": true
+        },
+        "logoUrl": {
+          "type": "string",
+          "required": true
+        },
+        "isActive": {
+          "type": "boolean",
+          "required": false
+        }
+      }
+    },
+    "role": {
+      "properties": {
+        "roleId": {
+          "type": "integer"
+        },
+        "roleName": {
+          "type": "string"
+        }
+      }
+    },
+    "roles": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/role"
+      }
+    },
+    "generalsettings": {
+      "properties": {
+        "generalSettingsID": {
+          "type": "integer"
+        },
+        "amountToOptOut": {
+          "type": "float"
+        },
+        "textShowWallet": {
+          "type": "text"
+        },
+        "pointsReferral": {
+          "type": "text"
+        },
+        "textPointReferral": {
+          "type": "text"
+        },
+        "optOutDateTime": {
+          "type": "datetime"
+        },
+        "currency": {
+          "type": "text"
+        },
+        "mxContactPhone": {
+          "type": "text"
+        },
+        "usContactPhone": {
+          "type": "text"
+        },
+        "mxContactEmail": {
+          "type": "text"
+        },
+        "usContactEmail": {
+          "type": "text"
+        },
+        "mxFaq": {
+          "type": "text"
+        },
+        "usFaq": {
+          "type": "text"
+        },
+        "showOptOut": {
+          "type": "boolean"
+        },
+        "isActive": {
+          "type": "boolean"
+        }
+      }
+    },
+    "permission": {
+      "properties": {
+        "permissionId": {
+          "type": "integer"
+        },
+        "isActive": {
+          "type": "boolean"
+        },
+        "permissionName": {
+          "type": "text"
+        },
+        "permissionValue": {
+          "type": "integer"
+        }
+      }
+    },
+    "permissions": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/permission"
+      }
+    },
+    "users": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/user"
+      }
+    },
+    "networks": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/network"
+      }
+    },
+    "overallTransaction": {
+      "properties": {
+        "overallTransactionID": {
+          "type": "integer"
+        },
+        "overallTransactionTypeID": {
+          "type": "string"
+        },
+        "networkID": {
+          "type": "integer"
+        },
+        "imei": {
+          "type": "string"
+        },
+        "userID": {
+          "model": "User"
+        },
+        "deviceID": {
+          "type": "string"
+        },
+        "applicationKey": {
+          "type": "string"
+        },
+        "eventId": {
+          "type": "string"
+        },
+        "itemName": {
+          "type": "string"
+        },
+        "offerTitle": {
+          "type": "string"
+        },
+        "signature": {
+          "type": "string"
+        },
+        "state": {
+          "type": "string"
+        },
+        "timestamp": {
+          "type": "string"
+        },
+        "adProvider": {
+          "type": "string"
+        },
+        "revenue": {
+          "type": "string"
+        },
+        "deliveryType": {
+          "type": "string"
+        },
+        "longitude": {
+          "type": "string"
+        },
+        "latitude": {
+          "type": "string"
+        },
+        "dateToRedeem": {
+          "type": "string"
+        },
+        "revenueDate": {
+          "type": "string"
+        },
+        "countryCode": {
+          "type": "string"
+        },
+        "ipAddress": {
+          "type": "string"
+        },
+        "walletID": {
+          "type": "string"
+        },
+        "adTypeID": {
+          "type": "string"
+        },
+        "points": {
+          "type": "string"
+        },
+        "amount": {
+          "type": "string"
+        },
+        "currency": {
+          "type": "string"
+        },
+        "paidAmount": {
+          "type": "string"
+        },
+        "paidFees": {
+          "type": "string"
+        },
+        "payoutItemId": {
+          "type": "string"
+        },
+        "payoutStatus": {
+          "type": "string"
+        },
+        "payoutError": {
+          "type": "string"
+        },
+        "transectionItemId": {
+          "type": "string"
+        },
+        "transectionLink": {
+          "type": "string"
+        },
+        "paidData": {
+          "type": "string"
+        },
+        "isActive": {
+          "type": "boolean"
+        }
+      }
+    },
+    "Error": {
+      "properties": {
+        "errorMessage": {
+          "type": "string"
+        },
+        "resultCode": {
+          "type": "integer"
+        },
+        "result": {
+          "type": "object"
+        }
+      }
+    }
+  },
+
+  "parameters": {
+    "deviceId": {
+      "name": "deviceId",
+      "in": "body",
+      "type": "string",
+      "description": "Device number"
+    },
+    "imei": {
+      "name": "imei",
+      "in": "body",
+      "type": "string",
+      "description": "Device imei"
+    },
+    "pushNotificationId": {
+      "name": "pushNotificationId",
+      "in": "body",
+      "type": "uuid",
+      "description": "Id for Push notification service."
+    },
+    "limit": {
+      "name": "limit",
+      "in": "query",
+      "description": "Limits the number of returned results",
+      "required": false,
+      "type": "integer",
+      "default": 50
+    },
+    "offset": {
+      "name": "offset",
+      "in": "query",
+      "description": "Page number",
+      "type": "integer",
+      "default": 0
+    }
+  },
+  "responses": {
+    "TemplateResponse": {
+      "description": "Authenticated User",
+      "type": "object",
+      "properties": {
+        "user": {
+          "$ref": "#/definitions/user"
+        },
+        "token": {
+          "type": "string"
+        },
+        "permissions": {
+          "type": "array"
+        }
+
+      }
+    },
+    "Auth200": {
+      "type": "object",
+      "properties": {
+        "errorMessage": {
+          "type": "string"
+        },
+        "resultCode": {
+          "type": "integer"
+        },
+        "result": {
+          "type": "object",
+          "$ref": "#/responses/TemplateResponse"
+        }
+      }
+    },
+    "Network200Result": {
+      "type": "object",
+      "properties": {
+        "errorMessage": {
+          "type": "string"
+        },
+        "resultCode": {
+          "type": "integer"
+        },
+        "result": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/network"
+          }
+        }
+      }
+    },
+    "Standard500ErrorResponse": {
+      "description": "An unexpected error occured.",
+      "schema": {
+        "$ref": "#/definitions/Error"
+      }
+    },
+    "Standard400ErrorResponse": {
+      "description": "Bad request.",
+      "schema": {
+        "$ref": "#/definitions/Error"
+      }
+    },
+    "Standard404ErrorResponse": {
+      "description": "Not found.",
+      "schema": {
+        "$ref": "#/definitions/Error"
+      }
+    }
+  }
+}
