@@ -849,7 +849,7 @@
       "post": {
         "tags": ["role"],
         "summary": "create",
-        "description": "Create role",
+        "description": "Create rolee",
         "operationId": "create",
         "consumes": ["application/json"],
         "produces": ["application/json"],
